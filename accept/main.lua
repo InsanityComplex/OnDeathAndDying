@@ -1,40 +1,52 @@
-ents = {}
+function loadLevel()
 
-require("player")
---Gives player.* and background*
+	ents = {}
 
-player.load()
+	--Hard coded enemies for now
+	ents[0] = generateSpike(-100,100) --0th element, why?!
 
-require("monster")
---Gives monster.*
+	ents[1] = generateMonster(700,250)
+	ents[2] = generateMonster(1000,250)
+	ents[3] = generateMonster(1700,250)
 
-require("cloud")
---Gives cloud.*
+end
 
-require("spike")
---Gives spike.*
-
-require("platform")
-
-gameState = 0
-
-platform = generatePlatform(250,530,300,20)
-
-
---Hard coded enemies for now
-ents[0] = generateSpike(-100,100) --0th element, why?!
-
-ents[1] = generateMonster(700,250)
-ents[2] = generateMonster(1000,250)
-ents[3] = generateMonster(1700,250)
-
-
---Decorations/Interactables in world
 
 function love.load()
 
---Eventually move image loads into here.
-backgroundImage = love.graphics.newImage("back2.jpg")
+	ents = {}
+
+	require("player")
+	--Gives player.* and background*
+
+	player.load()
+
+	require("monster")
+	--Gives monster.*
+
+	require("cloud")
+	--Gives cloud.*
+
+	require("spike")
+	--Gives spike.*
+
+	require("platform")
+
+	gameState = 0
+
+	platform = generatePlatform(250,530,300,20)
+
+
+	--Hard coded enemies for now
+	ents[0] = generateSpike(-100,100) --0th element, why?!
+
+	ents[1] = generateMonster(700,250)
+	ents[2] = generateMonster(1000,250)
+	ents[3] = generateMonster(1700,250)
+
+	--Decorations/Interactables in world
+	--Eventually move image loads into here.
+	backgroundImage = love.graphics.newImage("back2.jpg")
 
 end
 
@@ -93,7 +105,7 @@ end
 
 
 --Check for player collision with ents, will destroy collided ents
-function checkCollision2(ents)
+function oldCheckCollision(ents)
 
 	
 	if player.x + player.width > ents[1].x and player.x < ents[1].x + ents[1].width and player.isCrouching == true then
@@ -139,6 +151,8 @@ function love.update(dt)
 	player.bottomCollision = false
 	player.leftCollision = false
 	player.rightCollision = false
+
+	backgroundX = backgroundX + 1
 
 	checkCollision(ents)
 

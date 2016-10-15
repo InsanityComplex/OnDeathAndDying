@@ -103,9 +103,9 @@ player.move = function()
 		player.flipImage = -1
 		moving = true
 		if player.leftCollision == false then
-			if(player.x < 200) then
+			if(player.x < 150) then
 				if backgroundX > -1 then
-				backgroundX = backgroundX - player.speed
+				--backgroundX = backgroundX - player.speed
 				end
 			else
 				player.x = player.x - player.speed
@@ -117,9 +117,9 @@ player.move = function()
 		player.flipImage = 1
 		moving = true
 		if player.rightCollision == false then
-			if(player.x > 600) then
+			if(player.x > 650) then
 				if backgroundX < 1000 then
-				backgroundX = backgroundX + player.speed
+				--backgroundX = backgroundX + player.speed
 				end
 			else
 				player.x = player.x + player.speed
