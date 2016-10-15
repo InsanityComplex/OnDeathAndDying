@@ -12,23 +12,24 @@ require("cloud")
 require("spike")
 --Gives spike.*
 
+require("platform")
+
 --Hard coded enemies for now
-ents[0] = monster --First element is not deleting, will replace with a placeholder later
-ents[1] = generateSpike(600,100)
-ents[2] = generateSpike(300,100)
+ents[0] = generateSpike(-100,100) --0th element, why?!
+
+ents[1] = generatePlatform(250,530,300,20)
+
+ents[2] = generateMonster(700,250)
+ents[3] = generateMonster(1000,250)
+ents[4] = generateMonster(1700,250)
+
 
 --Decorations/Interactables in world
-enviro = {}
 
 function love.load()
 
---Player Animation, soon
---player.animation = love.graphics.newImage("test.png")
-
---Clouds, etc.
+--Eventually move image loads into here.
 backgroundImage = love.graphics.newImage("back2.jpg")
-cloud.image = love.graphics.newImage("cloud.png")
-table.insert(enviro,cloud)
 
 end
 
@@ -47,19 +48,42 @@ function love.draw()
 		ents[i].draw()
 	end
 
-	for _,v in ipairs(enviro) do
-		v.draw()
-	end
-
 end
 
 --Check for player collision with ents, will destroy collided ents
 function checkCollision(ents)
 
+	player.topCollision = false
+	player.bottomCollision = false
+	player.leftCollision = false
+	player.rightCollision = false
+
 	for i,e in ipairs(ents) do
+
+		--Check collisions and set player collision status
+		--print(player.x .. " + " .. player.width .. " , " .. e.x .. " + " .. e.width )
 		if player.x + player.width > e.x and player.x < e.x + e.width then
-			table.remove(ents,i)
-			--Kill player or lose or something
+
+			--Bottom Collision
+			if player.y < e.y and player.y + player.height > e.y then
+				if e.id == 0 then
+					player.bottomCollision = true
+				elseif e.id == 1 then
+					table.remove(ents,i)
+				--Kill player or lose or something
+				end
+
+			--Top Collision
+			elseif player.y < e.y + e.height  and player.y + player.height > e.y + e.height then
+				if e.id == 0 then
+					player.topCollision = true
+				elseif e.id == 1 then
+				table.remove(ents,i)
+				--Kill player or lose or something
+				end
+			elseif(e.x < -100) then
+				table.remove(ents,i)
+			end
 		end
 	end 
 
@@ -67,14 +91,11 @@ end
 
 function love.update(dt)
 
-	player.update()
-
 	checkCollision(ents)
+
+	player.update()
 
 	for i=0,table.getn(ents),1 do
 		ents[i].update()
-	end
-	for _,v in ipairs(enviro) do
-		v.update()
 	end
 end

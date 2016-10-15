@@ -3,7 +3,14 @@ player = {}
 player.x = 50 --Spawn X-cord
 player.y = 490 --Spawn Y-cord
 player.speed = 5 --Speed per tick (x-cord)
-player.width = 40
+player.width = 0
+player.height = 194
+
+--Collision
+player.topCollision = false
+player.bottomCollision = false
+player.leftCollision = false
+player.rightCollision = false
 
 --Jump logic
 player.canJump = true -- Can the player jump?
@@ -47,7 +54,7 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 455 then
+	elseif player.y + 50 < 455 and player.bottomCollision == false then
 		player.y = player.y - player.gravityPerTick
 	else
 		player.canJump = true
@@ -63,24 +70,28 @@ player.move = function()
 	if love.keyboard.isDown("left") then
 		player.flipImage = -1
 		moving = true
-		if(player.x < 200) then
-			if backgroundX > -1 then
-			backgroundX = backgroundX - player.speed
+		if player.leftCollision == false then
+			if(player.x < 200) then
+				if backgroundX > -1 then
+				backgroundX = backgroundX - player.speed
+				end
+			else
+				player.x = player.x - player.speed
 			end
-		else
-			player.x = player.x - player.speed
 		end
 	end
 
 	if love.keyboard.isDown("right") then
 		player.flipImage = 1
 		moving = true
-		if(player.x > 600) then
-			if backgroundX < 1000 then
-			backgroundX = backgroundX + player.speed
+		if player.rightCollision == false then
+			if(player.x > 600) then
+				if backgroundX < 1000 then
+				backgroundX = backgroundX + player.speed
+				end
+			else
+				player.x = player.x + player.speed
 			end
-		else
-			player.x = player.x + player.speed
 		end
 	end
 

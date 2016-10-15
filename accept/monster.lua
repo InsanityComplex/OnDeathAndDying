@@ -1,26 +1,40 @@
 -- Basic chaser creature
 
-monster = {}
-monster.height = 50
-monster.width = 50
-monster.x = 1000
-monster.y = 600 - monster.height
+function generateMonster(xP,yP)
+	local monster = {}
+	monster.x = xP
+	monster.y = yP
+	monster.width = 100
+	monster.height = 100
+	monster.speed = 3
+	monster.visionRange = 250
+	monster.chasing = false
+	monster.direction = 0
 
-monster.speed = 3
-monster.visionRange = 250
-
-monster.draw = function()
-	love.graphics.rectangle("fill",monster.x-backgroundX, monster.y, monster.width, monster.height)
-end
-
-monster.update = function()
-	-- Chase if player is in sight radius
-	-- player.x + backgroundX => map X position of player
-	if math.abs(player.x + backgroundX - monster.x) < monster.visionRange then
-		if(player.x + backgroundX > monster.x) then
-			monster.x = monster.x + monster.speed
-		elseif (player.x + backgroundX < monster.x) then
-			monster.x = monster.x - monster.speed
+	monster.update = function()
+		-- Chase if player is in sight radius
+		-- player.x + backgroundX => map X position of player
+		if math.abs(player.x + backgroundX - monster.x) < monster.visionRange  and monster.chasing == false then
+			if(player.x + backgroundX > monster.x) then
+				monster.x = monster.x + monster.speed
+				monster.chasing = true
+				monster.direction = 1
+			elseif (player.x + backgroundX < monster.x) and monster.chasing == false then
+				monster.x = monster.x - monster.speed
+				monster.chasing = true
+				monster.direction = -1
+			end
+		elseif(monster.chasing == true) then
+			monster.x = monster.x + monster.speed * monster.direction
 		end
 	end
+	monster.id = 1
+	monster.image = love.graphics.newImage("eye.png")
+	
+	monster.draw = function()
+		love.graphics.draw(monster.image, monster.x, monster.y, 0, 0.1, 0.1, 0, 0, 0, 0) 
+	end
+
+	return monster
+
 end
