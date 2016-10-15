@@ -14,7 +14,8 @@ require("spike")
 
 --Hard coded enemies for now
 ents[0] = monster --First element is not deleting, will replace with a placeholder later
-ents[1] = spike
+ents[1] = generateSpike(600,100)
+ents[2] = generateSpike(300,100)
 
 --Decorations/Interactables in world
 enviro = {}
