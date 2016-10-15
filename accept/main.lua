@@ -2,45 +2,18 @@ require("player")
 --Gives player.* and background*
 
 require("monster")
---Give monster.*
+--Gives monster.*
 
-
+require("cloud")
+--Gives cloud.*
 
 ents = {}
 
 --Hard coded enemies for now
 table.insert(ents,monster)
 
-
 --Decorations/Interactables in world
 enviro = {}
-
-cloud = {}
-cloud.x = player.x
-cloud.y = player.y - 180
-cloud.status = 100
-cloud.rain = {}
-
-rain = {}
-rain.x = cloud.x + 15
-rain.y = cloud.y
-rain.draw = function()
-	love.graphics.setColor(0,0,180)
-	love.graphics.circle("fill", rain.x, rain.y, 15)
-end
-
-table.insert(cloud.rain, rain)
-
-
-cloud.update = function()
-	cloud.x = player.x - 30
-	cloud.y = player.y - 180 
-end
-
-cloud.draw = function()
-	love.graphics.draw(cloud.image, cloud.x, cloud.y, 0, 1, 1, 0, 0, 0, 0) 
-end
-
 
 function love.load()
 
