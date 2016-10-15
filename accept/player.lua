@@ -18,6 +18,8 @@ player.jumpTicks = 30 --Ticks that each jump lasts
 player.jumpTicksLeft = 0 --Ticks left until stop jump
 player.jumpPerTick = 7 --Increase in Y per tick while jumping
 
+player.isCrouching = false
+
 player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
 
 player.currentTick = 0
@@ -37,10 +39,16 @@ for i=1,60 do
 	player.idle[i-1] =love.graphics.newImage("idle/00" .. string.format("%02d",i) .. ".png")
 end
 
+player.crouch = {}
+for i=1,10 do
+	player.crouch[i-1] =love.graphics.newImage("crouch/00" .. string.format("%02d",i) .. ".png")
+end
+
 player.jumpA = {}
 player.jumpA[0] = love.graphics.newImage("jump/001.png")
 --Draw the player
-player.draw = function()
+player.draw = function()	
+
 	love.graphics.draw(player.currentImage, player.x, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
 	--love.graphics.rectangle("fill", player.x, player.y, 50, 100)
 end
@@ -65,6 +73,22 @@ end
 player.move = function()
 
 	--There is a lot here, I need to and will clean this up later, preferably after some sleep
+	if love.keyboard.isDown("down") then
+		if(player.isCrouching == false) then
+			player.currentTick = 0
+			
+		end
+		player.isCrouching = true
+		player.height = 92
+		if(player.currentTick < 9) then
+			player.currentTick = player.currentTick + 1
+		end
+		player.currentImage = player.crouch[player.currentTick]
+	else
+		player.isCrouching = false
+		player.height = 194
+	end
+
 	moving = false
 	jumping = false
 	if love.keyboard.isDown("left") then
@@ -109,7 +133,7 @@ player.move = function()
 		end
 		player.currentTick = player.currentTick + 1
 		player.currentImage = player.running[player.currentTick]
-	else
+	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
 			player.currentTick = 0
 		end

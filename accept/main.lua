@@ -58,34 +58,39 @@ function checkCollision(ents)
 	player.leftCollision = false
 	player.rightCollision = false
 
-	for i,e in ipairs(ents) do
+	if player.x + player.width > ents[1].x and player.x < ents[1].x + ents[1].width and player.isCrouching == true then
+		player.bottomCollision = true
 
-		--Check collisions and set player collision status
-		--print(player.x .. " + " .. player.width .. " , " .. e.x .. " + " .. e.width )
-		if player.x + player.width > e.x and player.x < e.x + e.width then
+	else for i,e in ipairs(ents) do
 
-			--Bottom Collision
-			if player.y < e.y and player.y + player.height > e.y then
-				if e.id == 0 then
-					player.bottomCollision = true
-				elseif e.id == 1 then
+			--Check collisions and set player collision status
+			--print(player.x .. " + " .. player.width .. " , " .. e.x .. " + " .. e.width )
+			if player.x + player.width > e.x and player.x < e.x + e.width then
+
+				--Bottom Collision
+				if player.y < e.y and player.y + player.height > e.y then
+					if e.id == 0 then
+						player.bottomCollision = true
+					elseif e.id == 1 then
+						table.remove(ents,i)
+					--Kill player or lose or something
+					end
+
+				--Top Collision
+				elseif player.y < e.y + e.height  and player.y + player.height > e.y + e.height then
+					if e.id == 0 then
+						player.topCollision = true
+					elseif e.id == 1 then
 					table.remove(ents,i)
-				--Kill player or lose or something
+					--Kill player or lose or something
+					end
+				elseif(e.x < -100) then
+					table.remove(ents,i)
 				end
-
-			--Top Collision
-			elseif player.y < e.y + e.height  and player.y + player.height > e.y + e.height then
-				if e.id == 0 then
-					player.topCollision = true
-				elseif e.id == 1 then
-				table.remove(ents,i)
-				--Kill player or lose or something
-				end
-			elseif(e.x < -100) then
-				table.remove(ents,i)
 			end
-		end
-	end 
+		end 
+
+	end
 
 end
 
