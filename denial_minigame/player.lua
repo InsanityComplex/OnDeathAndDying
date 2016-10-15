@@ -39,17 +39,22 @@ end
 --Load images, move to load function soon
 player.running = {}
 for i=1,28 do
-	player.running[i-1] =love.graphics.newImage("Sprites/Player/running/00" .. string.format("%02d",i) .. ".png")
+	player.running[i-1] =love.graphics.newImage("Sprites/Player/running/" .. string.format("%04d",i) .. ".png")
 end
 
 player.idle = {}
 for i=1,60 do
-	player.idle[i-1] =love.graphics.newImage("Sprites/Player/idle/00" .. string.format("%02d",i) .. ".png")
+	player.idle[i-1] =love.graphics.newImage("Sprites/Player/idle/" .. string.format("%04d",i) .. ".png")
 end
 
 player.crouch = {}
 for i=1,10 do
-	player.crouch[i-1] =love.graphics.newImage("Sprites/Player/crouch/00" .. string.format("%02d",i) .. ".png")
+	player.crouch[i-1] =love.graphics.newImage("Sprites/Player/crouch/" .. string.format("%04d",i) .. ".png")
+end
+
+player.fall = {}
+for i=1,40 do
+  player.fall[i - 1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d", i) .. ".png")
 end
 
 player.jumpA = {}
@@ -70,7 +75,7 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 455 and player.bottomCollision == false then
+	elseif player.y + player.height < 600 and player.bottomCollision == false then
 		player.y = player.y - player.gravityPerTick
 	else
 		player.canJump = true
@@ -133,7 +138,7 @@ player.move = function()
 	end
 
 	--Set animation
-	if jumping then
+	if (jumping or player.jumpTicksLeft > 0) then
 		player.currentImage = player.jumpA[0]
 	elseif moving then
 		if(player.currentTick >= 24) then 
@@ -143,7 +148,7 @@ player.move = function()
       player.currentTick = player.currentTick + 1
       player.currentImage = player.running[player.currentTick]
     end
-	elseif player.isCrouching == false then
+	elseif not player.isCrouching then
 		if (player.currentTick >= 59) then
 			player.currentTick = 0
 		end
