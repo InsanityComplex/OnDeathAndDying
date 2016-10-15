@@ -1,74 +1,196 @@
+function loadLevel()
 
---Player--
-player = {}
-player.x = 50 --Spawn X-cord
-player.y = 490 --Spawn Y-cord
-player.speed = 5
-player.jumpCD = 240 -- Default cooldown to jump again
-player.currentJumpCD = 0 -- Current ticks left till canjump
-player.jumpHeight = 70 -- How high do we jump?
-player.gravityPerTick = -1
+	ents = {}
 
-player.update = function()
+	--Hard coded enemies for now
+	--ents[0] = generateSpike(-100,100) --0th element, why?!
 
-	--No platform collision atm
-	if player.currentJumpCD > 0 then
-		player.currentJumpCD = player.currentJumpCD - 1
-	end
-	if player.y + 50 < 600 then
-		player.y = player.y - player.gravityPerTick
-	end
-	player.move()
-end
-
-player.move = function()
-
-	if love.keyboard.isDown("left") then
-		player.x = player.x - player.speed
-	end
-
-	if love.keyboard.isDown("right") then
-		player.x = player.x + player.speed
-	end
-
-	if love.keyboard.isDown("up") then
-		player.jump()
-	end
+	--ents[1] = generateMonster(700,250)
+	--ents[2] = generateMonster(1000,250)
+	--ents[3] = generateMonster(1700,250)
 
 end
 
-player.jump = function()
-
-	if player.currentJumpCD == 0 then
-		player.y = player.y - player.jumpHeight
-		player.currentJumpCD = player.jumpCD
-	end	
-
-end
 
 function love.load()
 
---Player Animation, soon
-player.animation = love.graphics.newImage("test.png")
+	ents = {}
+
+	require("player")
+	--Gives player.* and background*
+
+	player.load()
+
+	require("monster")
+	--Gives monster.*
+
+	require("cloud")
+	--Gives cloud.*
+
+	require("spike")
+	--Gives spike.*
+
+	require("platform")
+
+	gameState = 0
+
+	platform = generatePlatform(250,530,300,20)
+  
+  DEATH_PIT = 820
+
+  backgroundInc = 5
+
+  tempColor = 0
+
+	--Hard coded enemies for now
+	ents[0] = generateSpike(-100,100) --0th element, why?!
+
+	--ents[1] = generateMonster(700,250)
+	--ents[2] = generateMonster(1000,250)
+	--ents[3] = generateMonster(1700,250)
+
+	--Decorations/Interactables in world
+	--Eventually move image loads into here.
+	backgroundImage = love.graphics.newImage("back.png")
 
 end
 
 function love.draw()
 
-	--Background
-	love.graphics.setColor(200,10,10)
-	love.graphics.rectangle("fill",0,0,800,600)
+	if gameState == 666 then
+		love.graphics.rectangle("fill", 0, 0, 800, 600)
+		player.load()
+		gameState = 0
+	else
+		--Background
+		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
+		if(backgroundX > 7200) then
+			backgroundX = 7200
+      backgroundInc = - backgroundInc
+      tempColor = tempColor + 75
+      love.graphics.setColor(tempColor, 0, tempColor)
+    elseif(backgroundX <= 0) then
+      backgroundInc = - backgroundInc
+		end
 
-	--Player
-	love.graphics.setColor(125,0,60)
-	love.graphics.draw(player.animation, player.x, player.y, 0, 1, 1, 0, 0, 0, 0)
-  
-  --Platform
-  
+		player.draw()
+
+		platform.draw()
+
+		--Ents
+		for i=0,table.getn(ents),1 do
+			ents[i].draw()
+		end
+	end
+
+end
+
+function checkCollision(ents)
+
+	if player.y + player.height >= DEATH_PIT then
+		gameState = 666
+	end
+
+	--Check collision with platform
+  heightCheck = player.y--Used for duck vs. mobs
+    if(player.isCrouching == true) then
+      heightCheck = heightCheck + 90
+    end
+    if not player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height > platform.y and player.y < platform.y + platform.height then
+      player.bottomCollision = true
+    elseif player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height - FALLING_BOUNCE > platform.y and player.y < platform.y + platform.height then
+    player.bottomCollision = true
+    end
+    
+    
+    if player.x + player.width > platform.x and player.x < platform.x then
+    
+      if platform.y <= heightCheck and heightCheck <= platform.y + platform.height then
+       player.rightCollision = true
+      elseif platform.y + platform.height < player.y + player.height and platform.y + platform.height > heightCheck then
+        player.rightCollision = true
+      end
+    end
+    if player.x + player.width > platform.x + platform.width and player.x < platform.x + platform.width then
+    
+      if platform.y <= heightCheck and heightCheck <= platform.y + platform.height then
+       player.leftCollision = true
+      elseif platform.y + platform.height < player.y + player.height and platform.y + platform.height > heightCheck then
+        player.leftCollision = true
+      end
+    
+	else 
+		for i,e in ipairs(ents) do
+			if player.x + player.width > e.x and player.x < e.x + e.width and heightCheck < e.y + e.height then
+				if e.id == 1 then
+					table.remove(ents,i)
+					gameState = 666
+					--Kill player or lose or something
+				end
+			end
+		end
+
+	end
+
+
+end
+
+
+--Check for player collision with ents, will destroy collided ents
+function oldCheckCollision(ents)
+
+	
+	if player.x + player.width > ents[1].x and player.x < ents[1].x + ents[1].width and player.isCrouching == true then
+		player.bottomCollision = true
+
+	else for i,e in ipairs(ents) do
+
+			--Check collisions and set player collision status
+			--print(player.x .. " + " .. player.width .. " , " .. e.x .. " + " .. e.width )
+			if player.x + player.width > e.x and player.x < e.x + e.width then
+
+				--Bottom Collision
+				if player.y < e.y and player.y + player.height > e.y then
+					if e.id == 0 then
+						player.bottomCollision = true
+					elseif e.id == 1 then
+						table.remove(ents,i)
+					--Kill player or lose or something
+					end
+
+				--Top Collision
+				elseif player.y < e.y + e.height  and player.y + player.height > e.y + e.height then
+					if e.id == 0 then
+						player.topCollision = true
+					elseif e.id == 1 then
+					table.remove(ents,i)
+					--Kill player or lose or something
+					end
+				elseif(e.x < -100) then
+					table.remove(ents,i)
+				end
+			end
+		end 
+
+	end
+
 end
 
 function love.update(dt)
 
-	player.update()	
+	--Reset player collision
+	player.topCollision = false
+	player.bottomCollision = false
+	player.leftCollision = false
+	player.rightCollision = false
 
+	backgroundX = backgroundX + backgroundInc
+
+	checkCollision(ents)
+
+	player.update()
+
+	for i=0,table.getn(ents),1 do
+		ents[i].update()
+	end
 end

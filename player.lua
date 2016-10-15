@@ -2,7 +2,6 @@
 player = {}
 
 player.load = function()
-
 	player.x = 250 --Spawn X-cord
 	player.y = 290 --Spawn Y-cord
 	player.speed = 5 --Speed per tick (x-cord)
@@ -22,6 +21,7 @@ player.load = function()
 	player.jumpPerTick = 7 --Increase in Y per tick while jumping
 
 	player.isCrouching = false
+	player.isFalling = false
 
 	player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
 
@@ -30,6 +30,8 @@ player.load = function()
 
 	player.currentImage = ''
 
+  FALLING_BOUNCE = player.width
+
 	--Environment Stuff
 	backgroundX = 0	
 	backgroundY = 0
@@ -37,19 +39,25 @@ player.load = function()
 end
 
 --Load images, move to load function soon
+player.falling = {}
+for i=1,40 do
+	player.falling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
+end
+
+
 player.running = {}
 for i=1,28 do
-	player.running[i-1] =love.graphics.newImage("Sprites/Player/running/00" .. string.format("%02d",i) .. ".png")
+	player.running[i-1] = love.graphics.newImage("Sprites/Player/running/" .. string.format("%04d",i) .. ".png")
 end
 
 player.idle = {}
 for i=1,60 do
-	player.idle[i-1] =love.graphics.newImage("Sprites/Player/idle/00" .. string.format("%02d",i) .. ".png")
+	player.idle[i-1] = love.graphics.newImage("Sprites/Player/idle/" .. string.format("%04d",i) .. ".png")
 end
 
 player.crouch = {}
 for i=1,10 do
-	player.crouch[i-1] =love.graphics.newImage("Sprites/Player/crouch/00" .. string.format("%02d",i) .. ".png")
+	player.crouch[i-1] = love.graphics.newImage("Sprites/Player/Crouch/" .. string.format("%04d",i) .. ".png")
 end
 
 player.jumpA = {}
@@ -70,10 +78,15 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 455 and player.bottomCollision == false then
+	elseif player.y + player.height < DEATH_PIT and not player.bottomCollision then
 		player.y = player.y - player.gravityPerTick
+		player.isFalling = true
 	else
+    if player.isFalling then
+      player.y = player.y - FALLING_BOUNCE
+    end
 		player.canJump = true
+		player.isFalling = false
 	end
 	player.move()
 end
@@ -103,9 +116,9 @@ player.move = function()
 		player.flipImage = -1
 		moving = true
 		if player.leftCollision == false then
-			if(player.x < 200) then
+			if(player.x < 150) then
 				if backgroundX > -1 then
-				backgroundX = backgroundX - player.speed
+				--backgroundX = backgroundX - player.speed
 				end
 			else
 				player.x = player.x - player.speed
@@ -117,9 +130,9 @@ player.move = function()
 		player.flipImage = 1
 		moving = true
 		if player.rightCollision == false then
-			if(player.x > 600) then
+			if(player.x > 650) then
 				if backgroundX < 1000 then
-				backgroundX = backgroundX + player.speed
+				--backgroundX = backgroundX + player.speed
 				end
 			else
 				player.x = player.x + player.speed
@@ -133,20 +146,29 @@ player.move = function()
 	end
 
 	--Set animation
-	if jumping then
+	if jumping or player.jumpTicksLeft > 0 then
 		player.currentImage = player.jumpA[0]
 	elseif moving then
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
-		player.currentTick = player.currentTick + 1
-		player.currentImage = player.running[player.currentTick]
+		if not player.isCrouching then
+			player.currentTick = player.currentTick + 1
+			player.currentImage = player.running[player.currentTick]
+		end
 	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
 			player.currentTick = 0
 		end
 		player.currentTick = player.currentTick + 1
 		player.currentImage = player.idle[player.currentTick]
+	end
+
+	if player.isFalling == true then
+		if player.currentTick >= 39 then
+			player.currentTick = 0
+		end
+		player.currentImage = player.falling[player.currentTick]
 	end
 
 end
