@@ -3,39 +3,18 @@ ents = {}
 require("player")
 --Gives player.* and background*
 
-player.load()
-
-require("monster")
---Gives monster.*
-
-require("cloud")
---Gives cloud.*
-
-require("spike")
---Gives spike.*
-
 require("platform")
 
-gameState = 0
-
-platform = generatePlatform(250,530,300,20)
-
-
---Hard coded enemies for now
-ents[0] = generateSpike(-100,100) --0th element, why?!
-
-ents[1] = generateMonster(700,250)
-ents[2] = generateMonster(1000,250)
-ents[3] = generateMonster(1700,250)
 
 
 --Decorations/Interactables in world
 
 function love.load()
-
---Eventually move image loads into here.
-backgroundImage = love.graphics.newImage("back2.jpg")
-
+  player.load()
+  gameState = 0
+  platform = {}
+  platform[0] = generatePlatform(250,530,300,20)
+  platform[1] = generatePlatform(350,400,70,20)
 end
 
 function love.draw()
@@ -45,17 +24,10 @@ function love.draw()
 		player.load()
 		gameState = 0
 	else
-		--Background
-		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
-
 		player.draw()
-
-		platform.draw()
-
-		--Ents
-		for i=0,table.getn(ents),1 do
-			ents[i].draw()
-		end
+    for i=0, table.getn(platform), 1 do
+      platform[i].draw()
+    end
 	end
 
 end
@@ -69,26 +41,36 @@ function checkCollision(ents)
 	--Check collision with platform
 	heightCheck = player.y--Used for duck vs. mobs
 	if(player.isCrouching == true) then
-		heightCheck = heightCheck + 90
+		heightCheck = heightCheck + 150
 	end
+
 	--print(player.x .. " + " .. player.width .. " " .. platform.x .. " + " .. platform.width)
-	if player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y+player.height > platform.y then
-		player.bottomCollision = true
-	--Mob Collision
-	else 
-		for i,e in ipairs(ents) do
-			if player.x + player.width > e.x and player.x < e.x + e.width and heightCheck < e.y + e.height then
-				if e.id == 1 then
-					table.remove(ents,i)
-					gameState = 666
-					--Kill player or lose or something
-				end
-			end
-		end
-
-	end
-
-
+  for i=0, table.getn(platform), 1 do
+    heightCheck = player.y--Used for duck vs. mobs
+    if(player.isCrouching == true) then
+      heightCheck = heightCheck + 90
+    end
+    if player.x + player.width > platform[i].x and player.x < platform[i].x + platform[i].width and player.y + player.height > platform[i].y and player.y < platform[i].y + platform[i].height then
+      player.bottomCollision = true
+    end
+    
+    if player.x + player.width > platform[i].x and player.x < platform[i].x then
+    
+      if platform[i].y <= heightCheck and heightCheck <= platform[i].y + platform[i].height then
+       player.rightCollision = true
+      elseif platform[i].y + platform[i].height < player.y + player.height and platform[i].y + platform[i].height > heightCheck then
+        player.rightCollision = true
+      end
+    end
+    if player.x + player.width > platform[i].x + platform[i].width and player.x < platform[i].x + platform[i].width then
+    
+      if platform[i].y <= heightCheck and heightCheck <= platform[i].y + platform[i].height then
+       player.leftCollision = true
+      elseif platform[i].y + platform[i].height < player.y + player.height and platform[i].y + platform[i].height > heightCheck then
+        player.leftCollision = true
+      end
+    end
+  end
 end
 
 
@@ -143,8 +125,4 @@ function love.update(dt)
 	checkCollision(ents)
 
 	player.update()
-
-	for i=0,table.getn(ents),1 do
-		ents[i].update()
-	end
 end
