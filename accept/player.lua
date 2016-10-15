@@ -13,8 +13,32 @@ player.jumpPerTick = 7 --Increase in Y per tick while jumping
 
 player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
 
-player.update = function()
+player.currentTick = 0
+player.flipImage = 1
 
+player.currentImage = ''
+
+
+--Load images, move to load function soon
+player.running = {}
+for i=1,28 do
+	player.running[i-1] =love.graphics.newImage("running/00" .. string.format("%02d",i) .. ".png")
+end
+
+player.idle = {}
+for i=1,60 do
+	player.idle[i-1] =love.graphics.newImage("idle/00" .. string.format("%02d",i) .. ".png")
+end
+
+
+--Draw the player
+player.draw = function()
+	love.graphics.draw(player.currentImage, player.x, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
+	--love.graphics.rectangle("fill", player.x, player.y, 50, 100)
+end
+
+player.update = function()
+	
 	--Jump Logic
 	if player.jumpTicksLeft > 0 then
 		player.y = player.y - player.jumpPerTick
@@ -22,7 +46,7 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 550 then
+	elseif player.y + 50 < 455 then
 		player.y = player.y - player.gravityPerTick
 	else
 		player.canJump = true
@@ -32,7 +56,11 @@ end
 
 player.move = function()
 
+	--There is a lot here, I need to and will clean this up later, preferably after some sleep
+	moving = false
 	if love.keyboard.isDown("left") then
+		player.flipImage = -1
+		moving = true
 		if(player.x < 200) then
 			if backgroundX > -1 then
 			backgroundX = backgroundX - player.speed
@@ -43,6 +71,8 @@ player.move = function()
 	end
 
 	if love.keyboard.isDown("right") then
+		player.flipImage = 1
+		moving = true
 		if(player.x > 600) then
 			if backgroundX < 1000 then
 			backgroundX = backgroundX + player.speed
@@ -55,6 +85,21 @@ player.move = function()
 
 	if love.keyboard.isDown("up") then
 		player.jump()
+	end
+
+	--Set animation
+	if moving then
+		if(player.currentTick >= 24) then 
+			player.currentTick = 0
+		end
+		player.currentTick = player.currentTick + 1
+		player.currentImage = player.running[player.currentTick]
+	else
+		if (player.currentTick >= 59) then
+			player.currentTick = 0
+		end
+		player.currentTick = player.currentTick + 1
+		player.currentImage = player.idle[player.currentTick]
 	end
 
 end

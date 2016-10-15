@@ -35,7 +35,7 @@ function love.draw()
 	--Player
 	--love.graphics.setColor(125,0,60)
 	--love.graphics.draw(player.animation, player.x, player.y, 0, 1, 1, 0, 0, 0, 0) 
-	love.graphics.rectangle("fill", player.x, player.y, 50, 100)
+	player.draw()
 
 	--Environment
 	for _,v in ipairs(ents) do

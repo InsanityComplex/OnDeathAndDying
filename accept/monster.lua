@@ -11,7 +11,6 @@ monster.visionRange = 250
 
 monster.draw = function()
 	love.graphics.rectangle("fill",monster.x-backgroundX, monster.y, monster.width, monster.height)
-	print("Draw")
 end
 
 monster.update = function()
