@@ -1,46 +1,18 @@
 require("player")
 --Gives player.* and background*
 
+require("monster")
+--Give monster.*
+
 
 
 ents = {}
-entity = {}
-
-entity.update = function()
-	if entity.id == 1 then
-		--Enemy
-		a = 1
-	elseif entity.id == 2 then
-		--Spikes
-		a = 2
-	elseif entity.id == 3 then
-		--Platforms
-		a = 3
-	elseif entity.id == 4 then
-		--Power-ups
-		a = 4
-	end
-end
 
 --Hard coded enemies for now
-monster = {}
-monster.height = 50
-monster.width = 50
-monster.x = 1000
-monster.y = 600 - monster.height
-
-
-monster.draw = function()
-	love.graphics.rectangle("fill",monster.x-backgroundX, monster.y, monster.width, monster.height)
-	print("Draw")
-end
-
-monster.update = function()
-	
-end
-
 table.insert(ents,monster)
 
+
+--Decorations/Interactables in world
 enviro = {}
 
 cloud = {}

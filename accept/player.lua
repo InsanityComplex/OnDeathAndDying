@@ -33,7 +33,7 @@ end
 player.move = function()
 
 	if love.keyboard.isDown("left") then
-		if(player.x < 100) then
+		if(player.x < 200) then
 			if backgroundX > -1 then
 			backgroundX = backgroundX - player.speed
 			end
@@ -43,7 +43,7 @@ player.move = function()
 	end
 
 	if love.keyboard.isDown("right") then
-		if(player.x > 700) then
+		if(player.x > 600) then
 			if backgroundX < 1000 then
 			backgroundX = backgroundX + player.speed
 			end
