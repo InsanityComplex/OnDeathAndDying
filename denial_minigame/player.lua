@@ -139,8 +139,10 @@ player.move = function()
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
-		player.currentTick = player.currentTick + 1
-		player.currentImage = player.running[player.currentTick]
+    if not player.isCrouching then
+      player.currentTick = player.currentTick + 1
+      player.currentImage = player.running[player.currentTick]
+    end
 	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
 			player.currentTick = 0

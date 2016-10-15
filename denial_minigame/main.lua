@@ -38,12 +38,6 @@ function checkCollision(ents)
 		gameState = 666
 	end
 
-	--Check collision with platform
-	heightCheck = player.y--Used for duck vs. mobs
-	if(player.isCrouching == true) then
-		heightCheck = heightCheck + 150
-	end
-
 	--print(player.x .. " + " .. player.width .. " " .. platform.x .. " + " .. platform.width)
   for i=0, table.getn(platform), 1 do
     heightCheck = player.y--Used for duck vs. mobs
