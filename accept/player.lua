@@ -1,32 +1,40 @@
 --Player--
 player = {}
-player.x = 250 --Spawn X-cord
-player.y = 290 --Spawn Y-cord
-player.speed = 5 --Speed per tick (x-cord)
-player.width = 20
-player.height = 194
 
---Collision
-player.topCollision = false
-player.bottomCollision = false
-player.leftCollision = false
-player.rightCollision = false
+player.load = function()
 
---Jump logic
-player.canJump = true -- Can the player jump?
-player.jumpTicks = 30 --Ticks that each jump lasts
-player.jumpTicksLeft = 0 --Ticks left until stop jump
-player.jumpPerTick = 7 --Increase in Y per tick while jumping
+	player.x = 250 --Spawn X-cord
+	player.y = 290 --Spawn Y-cord
+	player.speed = 5 --Speed per tick (x-cord)
+	player.width = 20
+	player.height = 194
 
-player.isCrouching = false
+	--Collision
+	player.topCollision = false
+	player.bottomCollision = false
+	player.leftCollision = false
+	player.rightCollision = false
 
-player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
+	--Jump logic
+	player.canJump = true -- Can the player jump?
+	player.jumpTicks = 30 --Ticks that each jump lasts
+	player.jumpTicksLeft = 0 --Ticks left until stop jump
+	player.jumpPerTick = 7 --Increase in Y per tick while jumping
 
-player.currentTick = 0
-player.flipImage = 1
+	player.isCrouching = false
 
-player.currentImage = ''
+	player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
 
+	player.currentTick = 0
+	player.flipImage = 1
+
+	player.currentImage = ''
+
+	--Environment Stuff
+	backgroundX = 0	
+	backgroundY = 0
+
+end
 
 --Load images, move to load function soon
 player.running = {}
@@ -150,7 +158,3 @@ player.jump = function()
 		player.currentJumpCD = player.jumpCD
 	end	
 end
-
---Environment Stuff
-backgroundX = 0
-backgroundY = 0

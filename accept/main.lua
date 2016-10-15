@@ -3,6 +3,8 @@ ents = {}
 require("player")
 --Gives player.* and background*
 
+player.load()
+
 require("monster")
 --Gives monster.*
 
@@ -40,6 +42,8 @@ function love.draw()
 
 	if gameState == 666 then
 		love.graphics.rectangle("fill", 0, 0, 800, 600)
+		player.load()
+		gameState = 0
 	else
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
