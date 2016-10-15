@@ -1,3 +1,5 @@
+ents = {}
+
 require("player")
 --Gives player.* and background*
 
@@ -7,10 +9,12 @@ require("monster")
 require("cloud")
 --Gives cloud.*
 
-ents = {}
+require("spike")
+--Gives spike.*
 
 --Hard coded enemies for now
-table.insert(ents,monster)
+ents[0] = monster --First element is not deleting, will replace with a placeholder later
+ents[1] = spike
 
 --Decorations/Interactables in world
 enviro = {}
@@ -38,8 +42,8 @@ function love.draw()
 	player.draw()
 
 	--Environment
-	for _,v in ipairs(ents) do
-		v.draw()
+	for i=0,table.getn(ents),1 do
+		ents[i].draw()
 	end
 
 	for _,v in ipairs(enviro) do
@@ -48,11 +52,26 @@ function love.draw()
 
 end
 
+--Check for player collision with ents, will destroy collided ents
+function checkCollision(ents)
+
+	for i,e in ipairs(ents) do
+		if player.x + player.width > e.x and player.x < e.x + e.width then
+			table.remove(ents,i)
+			--Kill player or lose or something
+		end
+	end 
+
+end
+
 function love.update(dt)
 
-	player.update()	
-	for _,v in ipairs(ents) do
-		v.update()
+	player.update()
+
+	checkCollision(ents)
+
+	for i=0,table.getn(ents),1 do
+		ents[i].update()
 	end
 	for _,v in ipairs(enviro) do
 		v.update()

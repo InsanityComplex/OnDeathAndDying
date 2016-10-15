@@ -3,7 +3,7 @@ player = {}
 player.x = 50 --Spawn X-cord
 player.y = 490 --Spawn Y-cord
 player.speed = 5 --Speed per tick (x-cord)
-
+player.width = 40
 
 --Jump logic
 player.canJump = true -- Can the player jump?
@@ -30,7 +30,8 @@ for i=1,60 do
 	player.idle[i-1] =love.graphics.newImage("idle/00" .. string.format("%02d",i) .. ".png")
 end
 
-
+player.jumpA = {}
+player.jumpA[0] = love.graphics.newImage("jump/001.png")
 --Draw the player
 player.draw = function()
 	love.graphics.draw(player.currentImage, player.x, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
@@ -58,6 +59,7 @@ player.move = function()
 
 	--There is a lot here, I need to and will clean this up later, preferably after some sleep
 	moving = false
+	jumping = false
 	if love.keyboard.isDown("left") then
 		player.flipImage = -1
 		moving = true
@@ -81,14 +83,16 @@ player.move = function()
 			player.x = player.x + player.speed
 		end
 	end
-	print(backgroundX)
 
 	if love.keyboard.isDown("up") then
+		jumping = true
 		player.jump()
 	end
 
 	--Set animation
-	if moving then
+	if jumping then
+		player.currentImage = player.jumpA[0]
+	elseif moving then
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
