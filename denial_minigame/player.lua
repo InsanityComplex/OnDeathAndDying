@@ -75,7 +75,7 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 455 and player.bottomCollision == false then
+	elseif player.y + player.height < 600 and player.bottomCollision == false then
 		player.y = player.y - player.gravityPerTick
 	else
 		player.canJump = true
