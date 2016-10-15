@@ -22,6 +22,7 @@ player.load = function()
 	player.jumpPerTick = 7 --Increase in Y per tick while jumping
 
 	player.isCrouching = false
+	player.isFalling = false
 
 	player.gravityPerTick = -4 -- Decrease in Y when not colliding or jumping
 
@@ -37,6 +38,12 @@ player.load = function()
 end
 
 --Load images, move to load function soon
+player.falling = {}
+for i=1,40 do
+	player.falling[i-1] =love.graphics.newImage("falling/00" .. string.format("%02d",i) .. ".png")
+end
+
+
 player.running = {}
 for i=1,28 do
 	player.running[i-1] =love.graphics.newImage("running/00" .. string.format("%02d",i) .. ".png")
@@ -70,10 +77,12 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + 50 < 455 and player.bottomCollision == false then
+	elseif player.y + 50 < 455 and not player.bottomCollision then
 		player.y = player.y - player.gravityPerTick
+		player.isFalling = true
 	else
 		player.canJump = true
+		player.isFalling = false
 	end
 	player.move()
 end
@@ -133,14 +142,16 @@ player.move = function()
 	end
 
 	--Set animation
-	if jumping then
+	if jumping or player.jumpTicksLeft > 0 then
 		player.currentImage = player.jumpA[0]
 	elseif moving then
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
-		player.currentTick = player.currentTick + 1
-		player.currentImage = player.running[player.currentTick]
+		if not player.isCrouching then
+			player.currentTick = player.currentTick + 1
+			player.currentImage = player.running[player.currentTick]
+		end
 	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
 			player.currentTick = 0
@@ -149,12 +160,18 @@ player.move = function()
 		player.currentImage = player.idle[player.currentTick]
 	end
 
+	if player.isFalling == true then
+		if player.currentTick >= 39 then
+			player.currentTick = 0
+		end
+		player.currentImage = player.falling[player.currentTick]
+	end
+
 end
 
 player.jump = function()
 
 	if player.currentJumpCD == 0 then
-		player.y = player.y - player.jumpHeight
 		player.currentJumpCD = player.jumpCD
 	end	
 end

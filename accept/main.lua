@@ -46,7 +46,7 @@ function love.load()
 
 	--Decorations/Interactables in world
 	--Eventually move image loads into here.
-	backgroundImage = love.graphics.newImage("back2.jpg")
+	backgroundImage = love.graphics.newImage("back.png")
 
 end
 
@@ -59,6 +59,9 @@ function love.draw()
 	else
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
+		if(backgroundX > 7200) then
+			backgroundX = 7200
+		end
 
 		player.draw()
 
