@@ -34,7 +34,7 @@ function love.load()
 
 	gameState = 0
 
-	platform = generatePlatform(250,530,300,20)
+	platform = generatePlatform(50,530,500,30)
   
   DEATH_PIT = 820
 
@@ -45,9 +45,9 @@ function love.load()
 	--Hard coded enemies for now
 	ents[0] = generateSpike(-100,100) --0th element, why?!
 
-	--ents[1] = generateMonster(700,250)
-	--ents[2] = generateMonster(1000,250)
-	--ents[3] = generateMonster(1700,250)
+	ents[1] = generateMonster(700,250)
+	ents[2] = generateMonster(1000,250)
+	ents[3] = generateMonster(1700,250)
 
 	--Decorations/Interactables in world
 	--Eventually move image loads into here.
