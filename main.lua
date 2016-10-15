@@ -29,13 +29,10 @@ player.move = function()
 
 	if love.keyboard.isDown("right") then
 		player.x = player.x + player.speed
-<<<<<<< HEAD
-=======
 	end
 
 	if love.keyboard.isDown("up") then
 		player.jump()
->>>>>>> d0937880eed3f8a24c720d9686cc4606c77c258a
 	end
 
 end
