@@ -49,7 +49,7 @@ end
 function love.load()
 
 --Player Animation, soon
-player.animation = love.graphics.newImage("test.png")
+player.animation = love.graphics.newImage("Player_Sprite/idle/0001.png")
 
 end
 
