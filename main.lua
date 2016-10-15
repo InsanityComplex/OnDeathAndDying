@@ -8,11 +8,11 @@ player.speed = 5
 player.move = function()
 
 	if love.keyboard.isDown("left") then
-		player.x = player.x - speed
+		player.x = player.x - player.speed
 	end
 
 	if love.keyboard.isDown("right") then
-		player.x = player.x + speed
+		player.x = player.x + player.speed
 	end
 
 end
