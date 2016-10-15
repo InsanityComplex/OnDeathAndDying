@@ -1,5 +1,45 @@
 require("player")
+--Gives player.* and background*
 
+
+
+ents = {}
+entity = {}
+
+entity.update = function()
+	if entity.id == 1 then
+		--Enemy
+		a = 1
+	elseif entity.id == 2 then
+		--Spikes
+		a = 2
+	elseif entity.id == 3 then
+		--Platforms
+		a = 3
+	elseif entity.id == 4 then
+		--Power-ups
+		a = 4
+	end
+end
+
+--Hard coded enemies for now
+monster = {}
+monster.height = 50
+monster.width = 50
+monster.x = 1000
+monster.y = 600 - monster.height
+
+
+monster.draw = function()
+	love.graphics.rectangle("fill",monster.x-backgroundX, monster.y, monster.width, monster.height)
+	print("Draw")
+end
+
+monster.update = function()
+	
+end
+
+table.insert(ents,monster)
 
 enviro = {}
 
@@ -21,7 +61,8 @@ table.insert(cloud.rain, rain)
 
 
 cloud.update = function()
-	cloud. x = player.x - 30
+	cloud.x = player.x - 30
+	cloud.y = player.y - 180 
 end
 
 cloud.draw = function()
@@ -52,6 +93,10 @@ function love.draw()
 	love.graphics.rectangle("fill", player.x, player.y, 50, 100)
 
 	--Environment
+	for _,v in ipairs(ents) do
+		v.draw()
+	end
+
 	for _,v in ipairs(enviro) do
 		v.draw()
 	end
@@ -61,6 +106,9 @@ end
 function love.update(dt)
 
 	player.update()	
+	for _,v in ipairs(ents) do
+		v.update()
+	end
 	for _,v in ipairs(enviro) do
 		v.update()
 	end
