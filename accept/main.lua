@@ -14,14 +14,17 @@ require("spike")
 
 require("platform")
 
+gameState = 0
+
+platform = generatePlatform(250,530,300,20)
+
+
 --Hard coded enemies for now
 ents[0] = generateSpike(-100,100) --0th element, why?!
 
-ents[1] = generatePlatform(250,530,300,20)
-
-ents[2] = generateMonster(700,250)
-ents[3] = generateMonster(1000,250)
-ents[4] = generateMonster(1700,250)
+ents[1] = generateMonster(700,250)
+ents[2] = generateMonster(1000,250)
+ents[3] = generateMonster(1700,250)
 
 
 --Decorations/Interactables in world
@@ -35,29 +38,60 @@ end
 
 function love.draw()
 
-	--Background
-	love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
+	if gameState == 666 then
+		love.graphics.rectangle("fill", 0, 0, 800, 600)
+	else
+		--Background
+		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
 
-	--Player
-	--love.graphics.setColor(125,0,60)
-	--love.graphics.draw(player.animation, player.x, player.y, 0, 1, 1, 0, 0, 0, 0) 
-	player.draw()
+		player.draw()
 
-	--Environment
-	for i=0,table.getn(ents),1 do
-		ents[i].draw()
+		platform.draw()
+
+		--Ents
+		for i=0,table.getn(ents),1 do
+			ents[i].draw()
+		end
 	end
 
 end
 
---Check for player collision with ents, will destroy collided ents
 function checkCollision(ents)
 
-	player.topCollision = false
-	player.bottomCollision = false
-	player.leftCollision = false
-	player.rightCollision = false
+	if player.y + player.height >= 600 then
+		gameState = 666
+	end
 
+	--Check collision with platform
+	heightCheck = player.y--Used for duck vs. mobs
+	if(player.isCrouching == true) then
+		heightCheck = heightCheck + 90
+	end
+	--print(player.x .. " + " .. player.width .. " " .. platform.x .. " + " .. platform.width)
+	if player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y+player.height > platform.y then
+		player.bottomCollision = true
+	--Mob Collision
+	else 
+		for i,e in ipairs(ents) do
+			if player.x + player.width > e.x and player.x < e.x + e.width and heightCheck < e.y + e.height then
+				if e.id == 1 then
+					table.remove(ents,i)
+					gameState = 666
+					--Kill player or lose or something
+				end
+			end
+		end
+
+	end
+
+
+end
+
+
+--Check for player collision with ents, will destroy collided ents
+function checkCollision2(ents)
+
+	
 	if player.x + player.width > ents[1].x and player.x < ents[1].x + ents[1].width and player.isCrouching == true then
 		player.bottomCollision = true
 
@@ -95,6 +129,12 @@ function checkCollision(ents)
 end
 
 function love.update(dt)
+
+	--Reset player collision
+	player.topCollision = false
+	player.bottomCollision = false
+	player.leftCollision = false
+	player.rightCollision = false
 
 	checkCollision(ents)
 

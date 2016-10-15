@@ -1,9 +1,9 @@
 --Player--
 player = {}
-player.x = 50 --Spawn X-cord
-player.y = 490 --Spawn Y-cord
+player.x = 250 --Spawn X-cord
+player.y = 290 --Spawn Y-cord
 player.speed = 5 --Speed per tick (x-cord)
-player.width = 0
+player.width = 20
 player.height = 194
 
 --Collision
@@ -49,8 +49,8 @@ player.jumpA[0] = love.graphics.newImage("jump/001.png")
 --Draw the player
 player.draw = function()	
 
-	love.graphics.draw(player.currentImage, player.x, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
-	--love.graphics.rectangle("fill", player.x, player.y, 50, 100)
+	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 50, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
+	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
 
 player.update = function()
@@ -79,14 +79,14 @@ player.move = function()
 			
 		end
 		player.isCrouching = true
-		player.height = 92
 		if(player.currentTick < 9) then
 			player.currentTick = player.currentTick + 1
+		elseif (player.currentTick > 9) then
+			player.currentTick = 0
 		end
 		player.currentImage = player.crouch[player.currentTick]
 	else
 		player.isCrouching = false
-		player.height = 194
 	end
 
 	moving = false
