@@ -39,17 +39,12 @@ end
 
 player.jump = function()
 
-	print("jumped")
 	if player.currentJumpCD == 0 then
 		player.y = player.y - player.jumpHeight
 		player.currentJumpCD = player.jumpCD
-	else
-		print(player.currentJumpCD)
-	end
-	
+	end	
 
 end
-
 
 function love.load()
 
