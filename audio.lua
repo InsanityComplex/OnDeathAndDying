@@ -10,7 +10,6 @@ lastState = 0
 function audioUpdate()
 	if gameState == lastState - 2 or lastState == gameState - 2 then
 		--nada
-	end
 	elseif not (gameState == lastState) then
 		audioStop()
 		--Menus
