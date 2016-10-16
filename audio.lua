@@ -8,7 +8,10 @@ end
 --Keep music on track
 lastState = 0
 function audioUpdate()
-	if not (gameState == lastState) then
+	if gameState == lastState - 2 or lastState == gameState - 2 then
+		--nada
+	end
+	elseif not (gameState == lastState) then
 		audioStop()
 		--Menus
 		if gameState == 0 then
