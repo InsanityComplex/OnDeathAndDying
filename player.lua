@@ -5,8 +5,9 @@ player.load = function()
 	player.x = 250 --Spawn X-cord
 	player.y = 290 --Spawn Y-cord
 	player.speed = 5 --Speed per tick (x-cord)
-	player.width = 20
-	player.height = 194
+  playerScale = 0.7
+	player.width = 20 * playerScale
+	player.height = 194 * playerScale
 
 	--Collision
 	player.topCollision = false
@@ -68,7 +69,7 @@ player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
 player.draw = function()
 	-- Debugging
   love.graphics.rectangle("line", player.x, player.y, player.width, player.height)
-	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 45, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
+	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 52 * playerScale, player.y, 0, (0.3 * player.flipImage) * playerScale, 0.2 * playerScale, 370, 70, 0, 0) 
 	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
 
