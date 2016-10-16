@@ -6,8 +6,8 @@ end
 
 function generateMonster(xP,yP)
 	local monster = {}
-	monster.x = xP
-	monster.y = yP
+	monster.x = xP + math.random(-20, 20)
+	monster.y = yP + math.random(-20, 20)
 	monster.width = 100
 	monster.height = 100
 	monster.speed = 3
@@ -16,6 +16,7 @@ function generateMonster(xP,yP)
 	monster.direction = 0
   monster.currentImage = 0
   monster.currentTick = 0
+  monster.currentAngle = math.random(360)
 
 	monster.update = function()
 		-- Chase if player is in sight radius
@@ -41,7 +42,7 @@ function generateMonster(xP,yP)
   end
 
   monster.draw = function()
-		love.graphics.draw(monsterfalling[monster.currentTick], monster.x + math.random(-20, 20), monster.y + math.random(-20, 20), math.random(-20, 20), 0.1, -0.1, 0, 0, 0, 0) 
+		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, -0.1, 0, 0, 0, 0) 
 	end
 
 	return monster
