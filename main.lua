@@ -147,7 +147,7 @@ function checkCollision(ents)
 				end
       elseif e.x < -100 then
           table.remove(ents,i)
-          table.insert(ents,generateMonster(math.random(1000,4000),math.random(100,500)))
+          table.insert(ents,generateMonster(math.random(1000,3500),math.random(100,500)))
 			end
 		end
 
