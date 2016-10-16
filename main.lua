@@ -20,8 +20,8 @@ function love.load()
 	--Gives player.* and background*
 
 	require("audio")
-
-	audio.playGameMusic()
+  audioLoad()
+	audioPlayTitle()
 
 	player.load()
 
