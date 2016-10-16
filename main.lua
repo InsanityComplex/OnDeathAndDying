@@ -61,7 +61,6 @@ function love.draw()
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
 
-
 		player.draw()
 		platform.draw()
 
@@ -82,7 +81,6 @@ function love.draw()
       end
     end
 	end
-
 end
 
 function checkCollision(ents)
@@ -99,7 +97,7 @@ function checkCollision(ents)
     if not player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height > platform.y and player.y < platform.y + platform.height then
       player.bottomCollision = true
     elseif player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height - FALLING_BOUNCE > platform.y and player.y < platform.y + platform.height then
-    player.bottomCollision = true
+      player.bottomCollision = true
     end
     
     
@@ -119,7 +117,7 @@ function checkCollision(ents)
         player.leftCollision = true
       end
     --ent collision
-	else 
+	else
 		for i,e in ipairs(ents) do
 			if player.x + player.width > e.x and player.x < e.x + e.width and heightCheck < e.y + e.height and player.y + player.height > e.y then
 				if e.id == 1 then
@@ -128,18 +126,11 @@ function checkCollision(ents)
 					--Kill player or lose or something
 				end
       elseif e.x < -100 then
-          table.remove(ents,i)
-          table.insert(ents,generateMonster())
+        table.remove(ents,i)
+        table.insert(ents,generateMonster())
 			end
 		end
-
-
-
-end
-
-
-
-
+  end
 end
 
 function love.update(dt)
@@ -177,7 +168,7 @@ function changeColor()
   R = math.random(70,255)
   G = math.random(70,255)
   B = math.random(70,255)
-  print(R.." "..G.." "..B)
+
   love.graphics.setColor(R, G, B)
 end
 
