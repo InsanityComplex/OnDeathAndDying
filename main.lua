@@ -34,7 +34,7 @@ function love.load()
 
 	gameState = 0
 
-	platform = generatePlatform(50,530,500,30)
+	platform = generatePlatform(50,530,700,30)
   
   DEATH_PIT = 820
 
@@ -67,11 +67,16 @@ function love.draw()
 		if(backgroundX > 7200) then
 			backgroundX = 7200
       backgroundInc = - backgroundInc
-      tempColor = tempColor + 75
-      love.graphics.setColor(tempColor, 0, tempColor)
+      changeColor()
     elseif(backgroundX <= 0) then
       backgroundInc = - backgroundInc
+      changeColor()
 		end
+    
+    function changeColor()
+      tempColor = tempColor + 75
+      love.graphics.setColor(tempColor, 0, tempColor)
+    end
 
 		player.draw()
 
