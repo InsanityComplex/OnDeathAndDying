@@ -27,7 +27,15 @@ function animation.player.load()
   player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
   
   player.crawl = {}
-  for i = 1, 24 do
-    player.crawl[i - 1] = player.crouch[i-1] = love.graphics.newImage("Sprites/Player/crawl/" .. string.format("%04d",i) .. ".png")
+  for i=1, 24 do
+    player.crawl[i - 1] = love.graphics.newImage("Sprites/Player/crawl/" .. string.format("%04d",i) .. ".png")
+  end
+end
+
+animation.monster = {}
+function animation.monster.load()
+  monsterfalling = {}
+  for i=1,40 do
+    monsterfalling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
   end
 end
