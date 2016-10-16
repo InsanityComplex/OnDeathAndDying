@@ -9,7 +9,7 @@ function generateMonster(xP,yP)
 	monster.x = xP + math.random(-20, 20)
 	monster.y = yP + math.random(-20, 20)
 	monster.width = 100
-	monster.height = 100
+	monster.height = 60
 	monster.speed = 3
 	monster.visionRange = 250
 	monster.chasing = false
@@ -32,7 +32,8 @@ function generateMonster(xP,yP)
   monster.draw = function()
     -- Debugging
     love.graphics.rectangle("line", monster.x, monster.y, monster.width, monster.height)
-		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, -0.1, 0, 0, 0, 0)
+    monster.currentAngle = 0 -- debug
+		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, 0.1, 0, 0, 0, 0)
 	end
 
 	return monster
