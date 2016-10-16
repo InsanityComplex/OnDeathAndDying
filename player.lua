@@ -16,14 +16,14 @@ player.load = function()
 
 	--Jump logic
 	player.canJump = true -- Can the player jump?
-	player.jumpTicks = 20 --Ticks that each jump lasts
+	player.jumpTicks = 30 --Ticks that each jump lasts
 	player.jumpTicksLeft = 0 --Ticks left until stop jump
 	player.jumpPerTick = 30--Increase in Y per tick while jumping
 
 	player.isCrouching = false
 	player.isFalling = false
 
-	player.gravityPerTick = -13 -- Decrease in Y when not colliding or jumping
+	player.gravityPerTick = -10 -- Decrease in Y when not colliding or jumping
 
 	player.currentTick = 0
 	player.flipImage = 1
