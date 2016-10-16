@@ -14,6 +14,11 @@ function love.load()
 
 	require("player")
 	--Gives player.* and background*
+  
+  require "menu"
+  button_spawn(5, 200, "Start", 1)
+  button_spawn(5, 250, "Credits", 2)
+  button_spawn(5, 300, "Quit", 3)
 
 	require("audio")
   audioLoad()
@@ -52,15 +57,22 @@ function love.load()
 
 end
 
+-- GameStates
+-- death state = 666
+-- menu state = 0
+-- game state = 1
+-- credit state = 2
+
 function love.draw()
 
-	if gameState == 666 then
+  if gameState == 0 then
+    drawMenu()
+	elseif gameState == 666 then
 		initWorld()
-		gameState = 0
-	else
+		gameState = 1
+	elseif gameState == 1 then
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
-
 
 		player.draw()
 		platform.draw()
@@ -69,20 +81,30 @@ function love.draw()
 		for i=1,table.getn(ents),1 do
 			ents[i].draw()
 		end
-    
-    function initWorld()
-      love.graphics.rectangle("fill", 0, 0, 800, 600)
-      player.load()
-      createMonsters()
-      for i=1,table.getn(ents),1 do
-        ents[i].draw()
-      end
-      if backgroundInc < 0 then 
-        backgroundInc = -backgroundInc
-      end
-    end
+  elseif gameState == 2 then
+    drawCredits()
 	end
+end
 
+function initWorld()
+  love.graphics.rectangle("fill", 0, 0, 800, 600)
+  player.load()
+  createMonsters()
+  for i=1,table.getn(ents),1 do
+    ents[i].draw()
+  end
+  if backgroundInc < 0 then 
+    backgroundInc = -backgroundInc
+  end
+end
+
+function drawMenu()
+  --love.graphics.print("Play", 350, 200, 0, 5, 5)
+  button_draw()
+end
+
+function drawCredits()
+  
 end
 
 function checkCollision(ents)
@@ -99,7 +121,7 @@ function checkCollision(ents)
     if not player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height > platform.y and player.y < platform.y + platform.height then
       player.bottomCollision = true
     elseif player.isFalling and player.x + player.width > platform.x and player.x < platform.x + platform.width and player.y + player.height - FALLING_BOUNCE > platform.y and player.y < platform.y + platform.height then
-    player.bottomCollision = true
+      player.bottomCollision = true
     end
     
     
@@ -119,7 +141,7 @@ function checkCollision(ents)
         player.leftCollision = true
       end
     --ent collision
-	else 
+	else
 		for i,e in ipairs(ents) do
 			if player.x + player.width > e.x and player.x < e.x + e.width and heightCheck < e.y + e.height and player.y + player.height > e.y then
 				if e.id == 1 then
@@ -128,23 +150,23 @@ function checkCollision(ents)
 					--Kill player or lose or something
 				end
       elseif e.x < -100 then
-          table.remove(ents,i)
-          table.insert(ents,generateMonster())
+        table.remove(ents,i)
+        table.insert(ents,generateMonster())
 			end
 		end
-
-
-
-end
-
-
-
-
+  end
 end
 
 function love.update(dt)
+  if gameState == 0 then
+    
+  elseif gameState == 1 then
+    gameUpdate(dt)
+  end
+end
 
-	--Reset player collision
+function gameUpdate(dt)
+  --Reset player collision
 	player.topCollision = false
 	player.bottomCollision = false
 	player.leftCollision = false
@@ -172,9 +194,12 @@ function love.update(dt)
   end
 end
 
-
 function changeColor()
-  love.graphics.setColor(math.random(70,255), math.random(70,255), math.random(70,255))
+  R = math.random(70,255)
+  G = math.random(70,255)
+  B = math.random(70,255)
+
+  love.graphics.setColor(R, G, B)
 end
 
 

@@ -1,8 +1,7 @@
 -- Basic chaser creature
-monsterfalling = {}
-for i=1,40 do
-	monsterfalling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
-end
+require "animation"
+
+animation.monster.load()
 
 function generateMonster()
 	local monster = {}
@@ -10,7 +9,7 @@ function generateMonster()
 	monster.y = math.random(70, 500)
 	monster.width = 100
 	monster.height = 60
-	monster.speed = 3
+	monster.speed = math.random(2, 6)
 	monster.visionRange = 250
 	monster.chasing = false
 	monster.direction = 0
@@ -25,9 +24,9 @@ function generateMonster()
 	monster.id = 1
   monster.currentTick = monster.currentTick + 1
 	if monster.currentTick >= 39 then
-			monster.currentTick = 0
+		monster.currentTick = 0
   end
-  end
+end
 
   monster.draw = function()
     -- Debugging

@@ -1,3 +1,4 @@
+require "animation"
 --Player--
 player = {}
 
@@ -14,6 +15,9 @@ player.load = function()
 	player.bottomCollision = false
 	player.leftCollision = false
 	player.rightCollision = false
+
+  -- Animations
+  animation.player.load();
 
 	--Jump logic
   player.amountjumps = 2
@@ -40,32 +44,6 @@ player.load = function()
 	backgroundY = 0
 
 end
-
---Load images, move to load function soon
-player.falling = {}
-for i=1,40 do
-	player.falling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
-end
-
-
-player.running = {}
-for i=1,28 do
-	player.running[i-1] = love.graphics.newImage("Sprites/Player/running/" .. string.format("%04d",i) .. ".png")
-end
-
-player.idle = {}
-for i=1,60 do
-	player.idle[i-1] = love.graphics.newImage("Sprites/Player/idle/" .. string.format("%04d",i) .. ".png")
-end
-
-player.crouch = {}
-for i=1,10 do
-	player.crouch[i-1] = love.graphics.newImage("Sprites/Player/Crouch/" .. string.format("%04d",i) .. ".png")
-end
-
-player.jumpA = {}
-player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
-
 
 --Draw the player
 player.draw = function()
@@ -103,9 +81,8 @@ player.move = function()
 
 	--There is a lot here, I need to and will clean this up later, preferably after some sleep
 	if love.keyboard.isDown("down") then
-		if(player.isCrouching == false) then
-			player.currentTick = 0
-			
+		if(not player.isCrouching) then
+			player.currentTick = 0  
 		end
 		player.isCrouching = true
 		if(player.currentTick < 9) then
@@ -160,9 +137,11 @@ player.move = function()
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
-		if not player.isCrouching then
-			player.currentTick = player.currentTick + 1
+    player.currentTick = player.currentTick + 1
+		if not player.isCrouching then  
 			player.currentImage = player.running[player.currentTick]
+    else
+      player.currentImage = player.crawl[player.currentTick]
 		end
 	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
