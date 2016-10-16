@@ -1,12 +1,13 @@
---Player--
+-Player--
 player = {}
-
+RATIO = 10
 player.load = function()
-	player.x = 250 --Spawn X-cord
-	player.y = 290 --Spawn Y-cord
+
+	player.x = 100 --Spawn X-cord
+	player.y = 0 --Spawn Y-cord
 	player.speed = 5 --Speed per tick (x-cord)
-	player.width = 20
-	player.height = 194
+	player.width = 20/RATIO
+	player.height = 194/RATIO
 
 	--Collision
 	player.topCollision = false
@@ -30,8 +31,6 @@ player.load = function()
 
 	player.currentImage = ''
 
-  FALLING_BOUNCE = player.width
-
 	--Environment Stuff
 	backgroundX = 0	
 	backgroundY = 0
@@ -41,33 +40,31 @@ end
 --Load images, move to load function soon
 player.falling = {}
 for i=1,40 do
-	player.falling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
+	player.falling[i-1] =love.graphics.newImage("falling/00" .. string.format("%02d",i) .. ".png")
 end
 
 
 player.running = {}
 for i=1,28 do
-	player.running[i-1] = love.graphics.newImage("Sprites/Player/running/" .. string.format("%04d",i) .. ".png")
+	player.running[i-1] =love.graphics.newImage("running/00" .. string.format("%02d",i) .. ".png")
 end
 
 player.idle = {}
 for i=1,60 do
-	player.idle[i-1] = love.graphics.newImage("Sprites/Player/idle/" .. string.format("%04d",i) .. ".png")
+	player.idle[i-1] =love.graphics.newImage("idle/00" .. string.format("%02d",i) .. ".png")
 end
 
 player.crouch = {}
 for i=1,10 do
-	player.crouch[i-1] = love.graphics.newImage("Sprites/Player/Crouch/" .. string.format("%04d",i) .. ".png")
+	player.crouch[i-1] =love.graphics.newImage("crouch/00" .. string.format("%02d",i) .. ".png")
 end
 
 player.jumpA = {}
-player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
-
-
+player.jumpA[0] = love.graphics.newImage("jump/001.png")
 --Draw the player
 player.draw = function()	
 
-	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 50, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
+	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 50, player.y, 0, (0.3/RATIO * player.flipImage), 0.2/RATIO, 370, 70, 0, 0) 
 	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
 
@@ -80,13 +77,10 @@ player.update = function()
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
 		player.jumpTicksLeft = player.jumpTicks
-	elseif player.y + player.height < DEATH_PIT and not player.bottomCollision then
+	elseif player.y + 50 < 455 and not player.bottomCollision then
 		player.y = player.y - player.gravityPerTick
 		player.isFalling = true
 	else
-    if player.isFalling then
-      player.y = player.y - FALLING_BOUNCE
-    end
 		player.canJump = true
 		player.isFalling = false
 	end

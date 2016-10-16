@@ -1,4 +1,8 @@
 -- Basic chaser creature
+monsterfalling = {}
+for i=1,40 do
+	monsterfalling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
+end
 
 function generateMonster(xP,yP)
 	local monster = {}
@@ -10,6 +14,8 @@ function generateMonster(xP,yP)
 	monster.visionRange = 250
 	monster.chasing = false
 	monster.direction = 0
+  monster.currentImage = 0
+  monster.currentTick = 0
 
 	monster.update = function()
 		-- Chase if player is in sight radius
@@ -27,12 +33,15 @@ function generateMonster(xP,yP)
 		elseif(monster.chasing == true) then
 			monster.x = monster.x + monster.speed * monster.direction
 		end
-	end
 	monster.id = 1
-	monster.image = love.graphics.newImage("eye.png")
-	
-	monster.draw = function()
-		love.graphics.draw(monster.image, monster.x, monster.y, 0, 0.1, 0.1, 0, 0, 0, 0) 
+  monster.currentTick = monster.currentTick + 1
+	if monster.currentTick >= 39 then
+			monster.currentTick = 0
+  end
+  end
+
+  monster.draw = function()
+		love.graphics.draw(monsterfalling[monster.currentTick], monster.x + math.random(-20, 20), monster.y + math.random(-20, 20), math.random(-20, 20), 0.1, -0.1, 0, 0, 0, 0) 
 	end
 
 	return monster

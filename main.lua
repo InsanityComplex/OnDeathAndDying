@@ -5,9 +5,9 @@ function loadLevel()
 	--Hard coded enemies for now
 	--ents[0] = generateSpike(-100,100) --0th element, why?!
 
-	--ents[1] = generateMonster(700,250)
-	--ents[2] = generateMonster(1000,250)
-	--ents[3] = generateMonster(1700,250)
+	ents[1] = generateMonster(700,250)
+	ents[2] = generateMonster(1000,250)
+	ents[3] = generateMonster(1700,250)
 
 end
 
@@ -79,7 +79,6 @@ function love.draw()
     end
 
 		player.draw()
-
 		platform.draw()
 
 		--Ents

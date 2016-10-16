@@ -1,3 +1,5 @@
+CLONE_NUMS = 1
+
 function loadLevel()
 
 	ents = {}
@@ -20,6 +22,8 @@ function love.load()
 	--Gives player.* and background*
 
 	player.load()
+  
+  --clone.load()
 
 	require("monster")
 	--Gives monster.*
