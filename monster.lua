@@ -20,20 +20,8 @@ function generateMonster(xP,yP)
 
 	monster.update = function()
 		-- Chase if player is in sight radius
-		-- player.x + backgroundX => map X position of player
-		if math.abs(player.x + backgroundX - monster.x) < monster.visionRange  and monster.chasing == false then
-			if(player.x + backgroundX > monster.x) then
-				monster.x = monster.x + monster.speed
-				monster.chasing = true
-				monster.direction = 1
-			elseif (player.x + backgroundX < monster.x) and monster.chasing == false then
-				monster.x = monster.x - monster.speed
-				monster.chasing = true
-				monster.direction = -1
-			end
-		elseif(monster.chasing == true) then
-			monster.x = monster.x + monster.speed * monster.direction
-		end
+		-- player.x + backgroundX => map X position of player  
+			monster.x = monster.x - monster.speed
 	monster.id = 1
   monster.currentTick = monster.currentTick + 1
 	if monster.currentTick >= 39 then

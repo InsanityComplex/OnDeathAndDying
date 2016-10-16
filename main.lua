@@ -8,6 +8,7 @@ function loadLevel()
 	ents[1] = generateMonster(700,250)
 	ents[2] = generateMonster(1000,250)
 	ents[3] = generateMonster(1700,250)
+  ents[4] = generateMonster(800,300)
 
 end
 
@@ -42,7 +43,7 @@ function love.load()
   
   DEATH_PIT = 820
 
-  backgroundInc = 30
+  backgroundInc = 30  
 
   tempColor = 0
 
@@ -77,7 +78,7 @@ function love.draw()
 		end
     
     function changeColor()
-      love.graphics.setColor(math.random(70,180), math.random(70,190), math.random(70,190))
+      love.graphics.setColor(math.random(70,255), math.random(70,255), math.random(70,255))
     end
 
 		player.draw()
@@ -144,6 +145,9 @@ function checkCollision(ents)
 					gameState = 666
 					--Kill player or lose or something
 				end
+      elseif e.x < -100 then
+          table.remove(ents,i)
+          table.insert(ents,generateMonster(math.random(1000,4000),math.random(100,500)))
 			end
 		end
 
