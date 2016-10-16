@@ -4,13 +4,7 @@ function loadLevel()
 
 	--Hard coded enemies for now
 	--ents[0] = generateSpike(-100,100) --0th element, why?!
-
-	ents[1] = generateMonster(700,250)
-	ents[2] = generateMonster(1000,250)
-	ents[3] = generateMonster(1700,250)
-  ents[4] = generateMonster(800,300)
-  ents[5] = generateMonster(500,300)
-
+  createMonsters()
 end
 
 
@@ -49,11 +43,8 @@ function love.load()
   tempColor = 0
 
 	--Hard coded enemies for now
-	ents[0] = generateSpike(-100,100) --0th element, why?!
 
-	ents[1] = generateMonster(700,250)
-	ents[2] = generateMonster(1000,250)
-	ents[3] = generateMonster(1700,250)
+	createMonsters()
 
 	--Decorations/Interactables in world
 	--Eventually move image loads into here.
@@ -69,34 +60,21 @@ function love.draw()
 	else
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
-		if(backgroundX > 7200 - 50) then
-			backgroundX = 7200 - 50
-      backgroundInc = - backgroundInc
-      changeColor()
-    elseif(backgroundX <= 20) then
-      backgroundInc = - backgroundInc
-      changeColor()
-		end
-    
-    function changeColor()
-      love.graphics.setColor(math.random(70,255), math.random(70,255), math.random(70,255))
-    end
+
 
 		player.draw()
 		platform.draw()
 
 		--Ents
-		for i=0,table.getn(ents),1 do
+		for i=1,table.getn(ents),1 do
 			ents[i].draw()
 		end
     
     function initWorld()
       love.graphics.rectangle("fill", 0, 0, 800, 600)
       player.load()
-      ents[1] = generateMonster(700,250)
-      ents[2] = generateMonster(1000,250)
-      ents[3] = generateMonster(1700,250)
-      for i=0,table.getn(ents),1 do
+      createMonsters()
+      for i=1,table.getn(ents),1 do
         ents[i].draw()
       end
       if backgroundInc < 0 then 
@@ -151,7 +129,7 @@ function checkCollision(ents)
 				end
       elseif e.x < -100 then
           table.remove(ents,i)
-          table.insert(ents,generateMonster(math.random(1000,3500),math.random(100,500)))
+          table.insert(ents,generateMonster())
 			end
 		end
 
@@ -178,7 +156,31 @@ function love.update(dt)
 
 	player.update()
 
-	for i=0,table.getn(ents),1 do
+	for i=1,table.getn(ents),1 do
 		ents[i].update()
 	end
+  
+  
+  
+  if(backgroundX > 7200 - 50) then
+		backgroundX = 7200 - 50
+    backgroundInc = - backgroundInc
+    changeColor()
+  elseif(backgroundX <= 20) then
+    backgroundInc = - backgroundInc
+    changeColor()
+  end
 end
+
+
+function changeColor()
+  love.graphics.setColor(math.random(70,255), math.random(70,255), math.random(70,255))
+end
+
+
+function createMonsters() 
+  for i = 1, 6, 1 do
+    ents[i] = generateMonster()
+  end
+end
+    

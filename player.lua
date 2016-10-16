@@ -16,10 +16,12 @@ player.load = function()
 	player.rightCollision = false
 
 	--Jump logic
+  player.amountjumps = 2
+  player.amountjumpsback = 2
 	player.canJump = true -- Can the player jump?
 	player.jumpTicks = 30 --Ticks that each jump lasts
 	player.jumpTicksLeft = 0 --Ticks left until stop jump
-	player.jumpPerTick = 30--Increase in Y per tick while jumping
+	player.jumpPerTick = 15--Increase in Y per tick while jumping
 
 	player.isCrouching = false
 	player.isFalling = false
@@ -68,7 +70,7 @@ player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
 --Draw the player
 player.draw = function()
 	-- Debugging
-  love.graphics.rectangle("line", player.x, player.y, player.width, player.height)
+ -- love.graphics.rectangle("line", player.x, player.y, player.width, player.height)
 	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 52 * playerScale, player.y, 0, (0.3 * player.flipImage) * playerScale, 0.2 * playerScale, 370, 70, 0, 0) 
 	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
@@ -79,8 +81,9 @@ player.update = function()
 	if player.jumpTicksLeft > 0 then
 		player.y = player.y - (player.jumpPerTick * ((player.jumpTicksLeft)/player.jumpTicks))
 		player.jumpTicksLeft = player.jumpTicksLeft - 1
-	elseif player.canJump and love.keyboard.isDown("up") then
+	elseif player.amountjumps > 0 and love.keyboard.isDown("up") then
 		player.canJump = false
+    player.amountjumps = player.amountjumps - 1
 		player.jumpTicksLeft = player.jumpTicks
 	elseif player.y + player.height < DEATH_PIT and not player.bottomCollision then
 		player.y = player.y - player.gravityPerTick
@@ -90,6 +93,7 @@ player.update = function()
       player.y = player.y - FALLING_BOUNCE
     end
 		player.canJump = true
+    player.amountjumps = player.amountjumpsback
 		player.isFalling = false
 	end
 	player.move()

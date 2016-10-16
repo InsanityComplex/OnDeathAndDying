@@ -4,10 +4,10 @@ for i=1,40 do
 	monsterfalling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
 end
 
-function generateMonster(xP,yP)
+function generateMonster()
 	local monster = {}
-	monster.x = xP + math.random(-20, 20)
-	monster.y = yP + math.random(-20, 20)
+	monster.x = math.random( 900, 2000)
+	monster.y = math.random(70, 500)
 	monster.width = 100
 	monster.height = 60
 	monster.speed = 3
@@ -31,7 +31,7 @@ function generateMonster(xP,yP)
 
   monster.draw = function()
     -- Debugging
-    love.graphics.rectangle("line", monster.x, monster.y, monster.width, monster.height)
+--    love.graphics.rectangle("line", monster.x, monster.y, monster.width, monster.height)
     monster.currentAngle = 0 -- debug
 		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, 0.1, 0, 0, 0, 0)
 	end
