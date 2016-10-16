@@ -1,6 +1,6 @@
 function audioLoad()
-	titleMusic = love.audio.newSource("1.wav", "static")
-	gameMusic = love.audio.newSource("2.wav", "static")
+	titleMusic = love.audio.newSource("Depression.ogg", "static")
+	gameMusic = love.audio.newSource("Depression.ogg", "static")
 end
 
 function audioStop()
