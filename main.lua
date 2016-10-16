@@ -19,6 +19,10 @@ function love.load()
 	require("player")
 	--Gives player.* and background*
 
+	require("audio")
+
+	audio.playGameMusic()
+
 	player.load()
 
 	require("monster")
