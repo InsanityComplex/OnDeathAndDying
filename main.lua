@@ -58,8 +58,7 @@ end
 function love.draw()
 
 	if gameState == 666 then
-		love.graphics.rectangle("fill", 0, 0, 800, 600)
-		player.load()
+		initWorld()
 		gameState = 0
 	else
 		--Background
@@ -85,6 +84,17 @@ function love.draw()
 		for i=0,table.getn(ents),1 do
 			ents[i].draw()
 		end
+    
+    function initWorld()
+      love.graphics.rectangle("fill", 0, 0, 800, 600)
+      player.load()
+      ents[1] = generateMonster(700,250)
+      ents[2] = generateMonster(1000,250)
+      ents[3] = generateMonster(1700,250)
+      for i=0,table.getn(ents),1 do
+        ents[i].draw()
+      end
+    end
 	end
 
 end
