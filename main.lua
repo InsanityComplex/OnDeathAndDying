@@ -105,7 +105,15 @@ function drawMenu()
 end
 
 function drawCredits()
-  
+  local y = 200
+  local x = 100
+  for i, v in ipairs(names) do
+    love.graphics.setColor(255,255,255)
+    love.graphics.setNewFont(20)
+    love.graphics.print(v.name, x, y)
+    love.graphics.print(v.title, x + 200, y)
+    y = y + 50
+  end
 end
 
 function checkCollision(ents)
