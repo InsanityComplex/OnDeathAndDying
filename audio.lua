@@ -6,7 +6,7 @@ end
 
 
 --Keep music on track
-lastState = -1
+lastState = 0
 function audioUpdate()
 	if not (gameState == lastState) then
 		audioStop()
@@ -27,10 +27,18 @@ function audioUpdate()
 end
 
 function audioStop()
-
-	love.audio.stop(titleMusic)
-	love.audio.stop(depressionMusic)
-	love.audio.stop(gameMusic)
+	if lastState == 0 then
+		love.audio.stop(titleMusic)
+	end
+		--Game
+	if gameState == 1 then
+		love.audio.stop(gameMusic)
+	end
+	--Credits
+	if gameState == 2 then
+		love.audio.stop(titleMusic)
+	end
+	
 end
 
 function audioPlayTitle()
