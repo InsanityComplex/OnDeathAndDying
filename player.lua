@@ -18,7 +18,7 @@ player.load = function()
 	player.canJump = true -- Can the player jump?
 	player.jumpTicks = 20 --Ticks that each jump lasts
 	player.jumpTicksLeft = 0 --Ticks left until stop jump
-	player.jumpPerTick = 14--Increase in Y per tick while jumping
+	player.jumpPerTick = 30--Increase in Y per tick while jumping
 
 	player.isCrouching = false
 	player.isFalling = false
@@ -75,7 +75,7 @@ player.update = function()
 	
 	--Jump Logic
 	if player.jumpTicksLeft > 0 then
-		player.y = player.y - player.jumpPerTick
+		player.y = player.y - (player.jumpPerTick * ((player.jumpTicksLeft)/player.jumpTicks))
 		player.jumpTicksLeft = player.jumpTicksLeft - 1
 	elseif player.canJump and love.keyboard.isDown("up") then
 		player.canJump = false
