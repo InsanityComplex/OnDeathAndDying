@@ -30,7 +30,9 @@ function generateMonster(xP,yP)
   end
 
   monster.draw = function()
-		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, -0.1, 0, 0, 0, 0) 
+    -- Debugging
+    love.graphics.rectangle("line", monster.x, monster.y, monster.width, monster.height)
+		love.graphics.draw(monsterfalling[monster.currentTick], monster.x, monster.y, monster.currentAngle, 0.1, -0.1, 0, 0, 0, 0)
 	end
 
 	return monster

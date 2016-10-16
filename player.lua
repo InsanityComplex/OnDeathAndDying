@@ -65,8 +65,9 @@ player.jumpA[0] = love.graphics.newImage("Sprites/Player/jump/001.png")
 
 
 --Draw the player
-player.draw = function()	
-
+player.draw = function()
+	-- Debugging
+  love.graphics.rectangle("line", player.x, player.y, player.width, player.height)
 	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 50, player.y, 0, (0.3 * player.flipImage), 0.2, 370, 70, 0, 0) 
 	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
