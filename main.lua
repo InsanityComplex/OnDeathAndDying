@@ -159,6 +159,7 @@ function checkCollision(ents)
 end
 
 function love.update(dt)
+  audioUpdate()
   if gameState == 0 then
     
   elseif gameState == 1 then
