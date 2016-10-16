@@ -10,7 +10,7 @@ function generateMonster()
 	monster.y = math.random(70, 500)
 	monster.width = 100
 	monster.height = 60
-	monster.speed = 3
+	monster.speed = math.random(2, 6)
 	monster.visionRange = 250
 	monster.chasing = false
 	monster.direction = 0

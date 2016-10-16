@@ -174,7 +174,11 @@ end
 
 
 function changeColor()
-  love.graphics.setColor(math.random(70,255), math.random(70,255), math.random(70,255))
+  R = math.random(70,255)
+  G = math.random(70,255)
+  B = math.random(70,255)
+  print(R.." "..G.." "..B)
+  love.graphics.setColor(R, G, B)
 end
 
 
