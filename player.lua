@@ -81,9 +81,8 @@ player.move = function()
 
 	--There is a lot here, I need to and will clean this up later, preferably after some sleep
 	if love.keyboard.isDown("down") then
-		if(player.isCrouching == false) then
-			player.currentTick = 0
-			
+		if(not player.isCrouching) then
+			player.currentTick = 0  
 		end
 		player.isCrouching = true
 		if(player.currentTick < 9) then
@@ -138,9 +137,11 @@ player.move = function()
 		if(player.currentTick >= 24) then 
 			player.currentTick = 0
 		end
-		if not player.isCrouching then
-			player.currentTick = player.currentTick + 1
+    player.currentTick = player.currentTick + 1
+		if not player.isCrouching then  
 			player.currentImage = player.running[player.currentTick]
+    else
+      player.currentImage = player.crawl[player.currentTick]
 		end
 	elseif player.isCrouching == false then
 		if (player.currentTick >= 59) then
