@@ -68,8 +68,8 @@ function love.draw()
 	else
 		--Background
 		love.graphics.draw(backgroundImage, 0, 0, 0, 1, 1, backgroundX, backgroundY, 0, 0)
-		if(backgroundX > 7200) then
-			backgroundX = 7200
+		if(backgroundX > 7200 - 50) then
+			backgroundX = 7200 - 50
       backgroundInc = - backgroundInc
       changeColor()
     elseif(backgroundX <= 0) then
