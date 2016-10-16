@@ -9,6 +9,7 @@ function loadLevel()
 	ents[2] = generateMonster(1000,250)
 	ents[3] = generateMonster(1700,250)
   ents[4] = generateMonster(800,300)
+  ents[5] = generateMonster(500,300)
 
 end
 
@@ -72,7 +73,7 @@ function love.draw()
 			backgroundX = 7200 - 50
       backgroundInc = - backgroundInc
       changeColor()
-    elseif(backgroundX <= 0) then
+    elseif(backgroundX <= 20) then
       backgroundInc = - backgroundInc
       changeColor()
 		end
@@ -97,6 +98,9 @@ function love.draw()
       ents[3] = generateMonster(1700,250)
       for i=0,table.getn(ents),1 do
         ents[i].draw()
+      end
+      if backgroundInc < 0 then 
+        backgroundInc = -backgroundInc
       end
     end
 	end
