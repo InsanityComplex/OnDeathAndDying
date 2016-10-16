@@ -16,7 +16,7 @@ function button_draw()
 end
 
 function love.mousepressed(x, y, button)
-  print ("x: " .. x .." y: " .. y)
+  --print ("x: " .. x .." y: " .. y)
   if button == 1 and gameState == 0 then
     --print "mouse 1 pressed"
     for i, v in ipairs(buttons) do
@@ -25,5 +25,7 @@ function love.mousepressed(x, y, button)
         gameState = v.state
       end
     end
+  elseif button == 1 and gameState == 2 then
+    gameState = 0
   end
 end

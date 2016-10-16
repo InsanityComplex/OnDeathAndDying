@@ -1,6 +1,6 @@
 names = {
   {name = "Daniel Tweedy", title = "Programmer"},
-  {name = "Leo", title = "Animator"}, 
+  {name = "Leo Ratner", title = "Animator"}, 
   {name = "Jannae McCartney", title = "Programmer"},
   {name = "Ryan Hittleman", title = "Programmer"},
   {name = "Scott Sorce", title = "Programmer"},

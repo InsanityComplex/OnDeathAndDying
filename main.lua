@@ -9,6 +9,7 @@ end
 
 
 function love.load()
+  love.window.setTitle("On Death and Dying")
 
 	ents = {}
 
@@ -17,9 +18,8 @@ function love.load()
 	--Gives player.* and background*
   
   require "menu"
-  button_spawn(5, 200, "Start", 1)
-  button_spawn(5, 250, "Credits", 2)
-  button_spawn(5, 300, "Quit", 3)
+  button_spawn(350, 200, "Start", 1)
+  button_spawn(350, 250, "Credits", 2)
 
 	require("audio")
   audioLoad()
@@ -105,13 +105,13 @@ function drawMenu()
 end
 
 function drawCredits()
-  local y = 200
-  local x = 100
+  local y = 120
+  local x = 220
   for i, v in ipairs(names) do
     love.graphics.setColor(255,255,255)
     love.graphics.setNewFont(20)
     love.graphics.print(v.name, x, y)
-    love.graphics.print(v.title, x + 200, y)
+    love.graphics.print(v.title, x + 220, y)
     y = y + 50
   end
 end

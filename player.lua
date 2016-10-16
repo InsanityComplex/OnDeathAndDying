@@ -2,6 +2,9 @@ require "animation"
 --Player--
 player = {}
 
+-- Animations
+  animation.player.load();
+
 player.load = function()
 	player.x = 250 --Spawn X-cord
 	player.y = 290 --Spawn Y-cord
@@ -15,9 +18,6 @@ player.load = function()
 	player.bottomCollision = false
 	player.leftCollision = false
 	player.rightCollision = false
-
-  -- Animations
-  animation.player.load();
 
 	--Jump logic
   player.amountjumps = 2
@@ -54,7 +54,10 @@ player.draw = function()
 end
 
 player.update = function()
-	
+	if love.keyboard.isDown("escape") then
+    gameState = 0
+  end
+  
 	--Jump Logic
 	if player.jumpTicksLeft > 0 then
 		player.y = player.y - (player.jumpPerTick * ((player.jumpTicksLeft)/player.jumpTicks))
@@ -101,7 +104,7 @@ player.move = function()
 		player.flipImage = -1
 		moving = true
 		if player.leftCollision == false then
-			if(player.x < 150) then
+			if(player.x < 10) then
 				if backgroundX > -1 then
 				--backgroundX = backgroundX - player.speed
 				end
@@ -115,7 +118,7 @@ player.move = function()
 		player.flipImage = 1
 		moving = true
 		if player.rightCollision == false then
-			if(player.x > 650) then
+			if(player.x > 780) then
 				if backgroundX < 1000 then
 				--backgroundX = backgroundX + player.speed
 				end

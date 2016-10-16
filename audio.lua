@@ -33,11 +33,11 @@ function audioStop()
 		love.audio.stop(titleMusic)
 	end
 		--Game
-	if gameState == 1 then
-		love.audio.stop(gameMusic)
+	if lastState == 1 then
+		love.audio.stop(gameLoopMusic)
 	end
 	--Credits
-	if gameState == 2 then
+	if lastState == 2 then
 		love.audio.stop(titleMusic)
 	end
 	
@@ -49,8 +49,8 @@ function audioPlayTitle()
 end
 
 function audioPlayGameMusic()
-	gameMusic:setLooping(true)
-	love.audio.play(gameMusic)
+	gameLoopMusic:setLooping(true)
+	love.audio.play(gameLoopMusic)
 end
 
 function audioPlayDepression()
