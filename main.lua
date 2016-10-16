@@ -13,6 +13,7 @@ function love.load()
 	ents = {}
 
 	require("player")
+  require "credits"
 	--Gives player.* and background*
   
   require "menu"
