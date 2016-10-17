@@ -5,7 +5,7 @@ animation.monster.load()
 
 function generateMonster()
 	local monster = {}
-	monster.x = math.random( 900, 2000)
+	monster.x = math.random(900, 2000)
 	monster.y = math.random(70, 500)
 	monster.width = 100
 	monster.height = 60
