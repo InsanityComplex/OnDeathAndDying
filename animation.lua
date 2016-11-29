@@ -1,6 +1,7 @@
 --Load images, move to load function soon
 animation = {}
 animation.player = {}
+--[[
 function animation.player.load()
   player.falling = {}
   for i=1,40 do
@@ -31,6 +32,7 @@ function animation.player.load()
     player.crawl[i - 1] = love.graphics.newImage("Sprites/Player/crawl/" .. string.format("%04d",i) .. ".png")
   end
 end
+]]--
 
 animation.monster = {}
 function animation.monster.load()
@@ -38,4 +40,36 @@ function animation.monster.load()
   for i=1,40 do
     monsterfalling[i-1] = love.graphics.newImage("Sprites/Player/Falling/" .. string.format("%04d",i) .. ".png")
   end
+end
+
+function animation.player.load()
+  animation.player.idle   = {}
+  initSprites(animation.player.idle, "Idle")
+  animation.player.run    = {}
+  initSprites(animation.player.run, "Run")
+  animation.player.jump   = {}
+  initSprites(animation.player.jump, "Jump")
+  animation.player.crouch = {}
+  initSprites(animation.player.crouch, "Crouch")
+  animation.player.crawl  = {}
+  initSprites(animation.player.crawl, "Crawl")
+  animation.player.fall   = {}
+  initSprites(animation.player.fall, "Fall")
+end
+
+function initSprites(inTable, animName)
+  inTable.image = love.graphics.newImage("Sprites/Sheets/" .. animName .. ".png")
+  inTable.frames = {}
+  map = io.open("Sprites/Sheets/Maps/" .. animName .. ".txt", "r")
+  while true do -- Not an infinite loop, ends when File Input ends
+    local line = map:read("*line")
+    if line == nil then break end
+    local t = {}
+    for match in line:gmatch("%S+") do
+      t[#t +1] = tonumber(match)
+    end
+
+    inTable.frames[t[1]] = love.graphics.newQuad(t[2], t[3], t[4], t[5], inTable.image:getDimensions())
+  end
+
 end

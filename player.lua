@@ -3,7 +3,7 @@ require "animation"
 player = {}
 
 -- Animations
-  animation.player.load();
+  animation.player.load()
 
 player.load = function()
 	player.x = 250 --Spawn X-cord
@@ -32,24 +32,24 @@ player.load = function()
 
 	player.gravityPerTick = -10 -- Decrease in Y when not colliding or jumping
 
-	player.currentTick = 0
+	player.currentTick = 1
 	player.flipImage = 1
 
 	player.currentImage = ''
+  player.currentFrame = {}
 
   FALLING_BOUNCE = player.width
 
 	--Environment Stuff
 	backgroundX = 0	
 	backgroundY = 0
-
 end
 
 --Draw the player
 player.draw = function()
 	-- Debugging
  -- love.graphics.rectangle("line", player.x, player.y, player.width, player.height)
-	love.graphics.draw(player.currentImage, player.x + -1 * player.flipImage * 52 * playerScale, player.y, 0, (0.3 * player.flipImage) * playerScale, 0.2 * playerScale, 370, 70, 0, 0) 
+	love.graphics.draw(player.currentImage, player.currentFrame, player.x + -1 * player.flipImage * 52 * playerScale, player.y, 0, (0.3 * player.flipImage) * playerScale, 0.2 * playerScale, 370, 70, 0, 0) 
 	---1 * flipImage * 50 is to keep sprite from jumping around when player changes direction
 end
 
@@ -85,15 +85,17 @@ player.move = function()
 	--There is a lot here, I need to and will clean this up later, preferably after some sleep
 	if love.keyboard.isDown("down") then
 		if(not player.isCrouching) then
-			player.currentTick = 0  
+			player.currentTick = 1
 		end
 		player.isCrouching = true
-		if(player.currentTick < 9) then
+		if(player.currentTick < table.getn(animation.player.crouch.frames)) then
 			player.currentTick = player.currentTick + 1
-		elseif (player.currentTick > 9) then
-			player.currentTick = 0
+		elseif (player.currentTick > table.getn(animation.player.crouch.frames)) then
+			player.currentTick = 1
 		end
-		player.currentImage = player.crouch[player.currentTick]
+--    player.currentTick = player.currentTick % table.getn(animation.player.crouch.frames) + 1
+		player.currentImage = animation.player.crouch.image
+    player.currentFrame = animation.player.crouch.frames[player.currentTick]
 	else
 		player.isCrouching = false
 	end
@@ -135,32 +137,40 @@ player.move = function()
 
 	--Set animation
 	if jumping or player.jumpTicksLeft > 0 then
-		player.currentImage = player.jumpA[0]
+		player.currentImage = animation.player.jump.image
+    player.currentFrame = animation.player.jump.frames[1]
 	elseif moving then
-		if(player.currentTick >= 24) then 
-			player.currentTick = 0
+    --[[
+		if(player.currentTick >= table.getn(animation.player.run.frames)) then 
+			player.currentTick = 1
 		end
-    player.currentTick = player.currentTick + 1
-		if not player.isCrouching then  
-			player.currentImage = player.running[player.currentTick]
+    ]]--
+    player.currentTick = player.currentTick % table.getn(animation.player.run.frames) + 1
+		if not player.isCrouching then
+			player.currentImage = animation.player.run.image
+      player.currentFrame = animation.player.run.frames[player.currentTick]
     else
-      player.currentImage = player.crawl[player.currentTick]
+      player.currentImage = animation.player.crawl.image
+      player.currentFrame = animation.player.crawl.frames[player.currentTick]
 		end
 	elseif player.isCrouching == false then
-		if (player.currentTick >= 59) then
-			player.currentTick = 0
+    --[[
+		if (player.currentTick >= table.getn(animation.player.idle.frames)) then
+			player.currentTick = 1
 		end
-		player.currentTick = player.currentTick + 1
-		player.currentImage = player.idle[player.currentTick]
+    ]]--
+		player.currentTick = player.currentTick % table.getn(animation.player.idle.frames) + 1
+    player.currentImage = animation.player.idle.image
+    player.currentFrame = animation.player.idle.frames[player.currentTick]
 	end
 
 	if player.isFalling == true then
-		if player.currentTick >= 39 then
-			player.currentTick = 0
+		if player.currentTick >= table.getn(animation.player.fall.frames) then
+			player.currentTick = 1
 		end
-		player.currentImage = player.falling[player.currentTick]
+    player.currentImage = animation.player.fall.image
+    player.currentFrame = animation.player.fall.frames[player.currentTick]
 	end
-
 end
 
 player.jump = function()
